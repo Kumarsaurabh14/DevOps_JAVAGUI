@@ -2,6 +2,7 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.sql.*;
 
 public class Form1 extends JFrame implements ActionListener
 {
@@ -10,6 +11,24 @@ public class Form1 extends JFrame implements ActionListener
 	JLabel nameLb, rollnoLb,stateLb;
 	Form1()
 	{
+		try
+		{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/student", "***", "****");
+			Statement smt = con.createStatement();
+			ResultSet rs = smt.executeQuery("select * from stu_table");
+			while(rs.next())
+			{
+				System.out.println(rs.getString(1));
+				System.out.println(rs.getString(2));
+				System.out.println(rs.getString(3));
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
 		nameLb=new JLabel("Name");
 		rollnoLb=new JLabel("Roll NO:");
 		stateLb=new JLabel("State");
@@ -36,7 +55,13 @@ public class Form1 extends JFrame implements ActionListener
 	{
 		if(e.getSource()==submitBt)
 		{
+			String name = nameTf.getText();
+			String rollno = rollnoTf.getText();
+			String state = stateTf.getText();
 			System.out.println("Button has been pressed.");
+			System.out.println("Name: "+name);
+			System.out.println("RollNo.: "+rollno);
+			System.out.println("State: "+state);
 		}
 	}
 	public static void main(String args[])
